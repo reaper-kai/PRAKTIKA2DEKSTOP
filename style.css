@@ -1,0 +1,411 @@
+:root {
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+    --bg-color: #ffffff;
+    --secondary-bg: #f3f4f6;
+    --text-main: #111827;
+    --text-muted: #6b7280;
+    --border-color: #e5e7eb;
+    --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: #f9fafb;
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Logic for switching steps without JS */
+#step-1-trigger, #step-2-trigger, #step-3-trigger, #step-4-trigger {
+    display: none;
+}
+
+/* Prevent text selection on buttons */
+.input-control, .btn, .preset-btn {
+    user-select: none;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 450px;
+    height: 900px;
+    max-height: 95vh;
+    background: var(--bg-color);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+    border-radius: 40px;
+    border: 8px solid #111;
+}
+
+@media (max-width: 480px) {
+    .app-container {
+        height: 100vh;
+        max-height: 100vh;
+        border: none;
+        border-radius: 0;
+    }
+}
+
+/* Screens visibility logic */
+.screen {
+    display: none;
+    flex: 1;
+    flex-direction: column;
+    padding: 24px;
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#step-1-trigger:checked ~ .app-container .screen--intro,
+#step-2-trigger:checked ~ .app-container .screen--amount,
+#step-3-trigger:checked ~ .app-container .screen--term,
+#step-4-trigger:checked ~ .app-container .screen--result {
+    display: flex;
+}
+
+/* Header / Progress Bar */
+.app-header {
+    padding: 20px 24px 10px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    margin-left: -8px;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--secondary-bg);
+    border-radius: 2px;
+    display: flex;
+    gap: 4px;
+}
+
+.progress-bar__segment {
+    flex: 1;
+    height: 100%;
+    background: var(--secondary-bg);
+    border-radius: 2px;
+    transition: var(--transition);
+}
+
+#step-2-trigger:checked ~ .app-container .progress-bar__segment:nth-child(1),
+#step-3-trigger:checked ~ .app-container .progress-bar__segment:nth-child(1),
+#step-3-trigger:checked ~ .app-container .progress-bar__segment:nth-child(2),
+#step-4-trigger:checked ~ .app-container .progress-bar__segment:nth-child(1),
+#step-4-trigger:checked ~ .app-container .progress-bar__segment:nth-child(2),
+#step-4-trigger:checked ~ .app-container .progress-bar__segment:nth-child(3) {
+    background: var(--primary-color);
+}
+
+/* Typography */
+.title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    line-height: 1.2;
+}
+
+.subtitle {
+    font-size: 16px;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+}
+
+/* Components */
+.main-icon-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 60px 0 40px;
+}
+
+.main-icon {
+    width: 100px;
+    height: 100px;
+    background: var(--primary-color);
+    border-radius: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4);
+}
+
+.input-group {
+    background: var(--secondary-bg);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.input-control {
+    background: white;
+    border-radius: 12px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    transition: var(--transition);
+}
+
+.input-control:active {
+    background-color: var(--border-color);
+    transform: scale(0.95);
+}
+
+.input-value-wrapper {
+    text-align: center;
+}
+
+.input-value {
+    font-size: 28px;
+    font-weight: 700;
+    display: block;
+}
+
+.input-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.presets {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 32px;
+}
+
+.preset-btn {
+    background: white;
+    border: 1px solid var(--border-color);
+    padding: 16px;
+    border-radius: var(--radius-sm);
+    text-align: center;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.preset-btn--active {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background: #eff6ff;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 18px;
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    text-decoration: none;
+}
+
+.btn--primary {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+}
+
+.btn--primary:hover {
+    background: var(--primary-hover);
+}
+
+.btn--secondary {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+.btn-spacer {
+    margin-top: auto;
+    margin-bottom: 20px;
+}
+
+/* Results Cards */
+.result-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.result-card--main {
+    padding: 32px 24px;
+}
+
+.result-label {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.result-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.mini-card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 16px;
+}
+
+.mini-card .result-label {
+    font-size: 11px;
+    text-align: left;
+}
+
+.mini-card .result-value {
+    font-size: 18px;
+    color: var(--text-main);
+    text-align: left;
+}
+
+.summary-card {
+    background: var(--primary-color);
+    color: white;
+    border-radius: var(--radius-md);
+    padding: 20px;
+    margin-bottom: 24px;
+    position: relative;
+}
+
+.summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.summary-label {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.summary-value {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.chart-bar {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+.chart-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: white;
+    width: 85%;
+}
+
+.chart-legend {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    opacity: 0.8;
+}
+
+/* Footer Navigation */
+.app-footer {
+    height: 80px;
+    background: white;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-muted);
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+#step-1-trigger:checked ~ .app-container .nav-item--home,
+#step-2-trigger:checked ~ .app-container .nav-item--calc,
+#step-3-trigger:checked ~ .app-container .nav-item--calc,
+#step-4-trigger:checked ~ .app-container .nav-item--result {
+    color: var(--primary-color);
+}
+
+.nav-icon {
+    width: 24px;
+    height: 24px;
+}
